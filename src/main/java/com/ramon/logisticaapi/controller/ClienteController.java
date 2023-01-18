@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ramon.logisticaapi.model.Cliente;
 import com.ramon.logisticaapi.repository.ClienteRepository;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/clientes")
 public class ClienteController {
@@ -39,13 +41,13 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cliente adicionar(@RequestBody Cliente cliente){
+    public Cliente adicionar(@Valid @RequestBody Cliente cliente){
         return clienteRepository.save(cliente);
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> atualizar(@PathVariable Long id, @RequestBody Cliente cliente){
+    public ResponseEntity<Cliente> atualizar(@Valid @PathVariable Long id, @RequestBody Cliente cliente){
         if(!clienteRepository.existsById(id)){
             return ResponseEntity.notFound().build();
         }
