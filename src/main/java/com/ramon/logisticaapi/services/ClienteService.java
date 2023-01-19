@@ -14,6 +14,11 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    public Cliente verificaCliente(Long id){
+        return clienteRepository.findById(id)
+                .orElseThrow(() -> new NegocioException("Cliente não encontrado"));
+    }
+
     @Transactional
     public Cliente salvar(Cliente cliente){
         boolean emailJaCadastrado = clienteRepository.findByEmail(cliente.getEmail())
