@@ -1,9 +1,11 @@
 package com.ramon.logisticaapi.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -32,8 +34,14 @@ public class Entrega {
     //private List<Ocorrencia> ocorrencias = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
+    @JsonProperty(access = Access.READ_ONLY)
     private StatusEntrega status;
+
     private BigDecimal taxa;
-    private OffsetDateTime dataPedido;
-    private OffsetDateTime dataFinalizacao;
+
+    @JsonProperty(access = Access.READ_ONLY)
+    private LocalDateTime dataPedido;
+
+    @JsonProperty(access = Access.READ_ONLY)
+    private LocalDateTime dataFinalizacao;
 }
