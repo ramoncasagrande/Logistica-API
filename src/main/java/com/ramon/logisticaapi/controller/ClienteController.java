@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ramon.logisticaapi.model.Cliente;
 import com.ramon.logisticaapi.repository.ClienteRepository;
+import com.ramon.logisticaapi.services.ClienteService;
 
 import jakarta.validation.Valid;
 
@@ -26,6 +27,8 @@ public class ClienteController {
 
     @Autowired
     private ClienteRepository clienteRepository;
+    @Autowired
+    private ClienteService clienteService;
 
     @GetMapping
     public List<Cliente> listar() {
@@ -42,7 +45,7 @@ public class ClienteController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente adicionar(@Valid @RequestBody Cliente cliente){
-        return clienteRepository.save(cliente);
+        return clienteService.salvar(cliente);
 
     }
 
@@ -52,7 +55,7 @@ public class ClienteController {
             return ResponseEntity.notFound().build();
         }
         cliente.setId(id);
-        cliente = clienteRepository.save(cliente);
+        cliente = clienteService.salvar(cliente);
         return ResponseEntity.ok(cliente);
     }
 
@@ -61,7 +64,7 @@ public class ClienteController {
         if(!clienteRepository.existsById(id)){
             return ResponseEntity.notFound().build();
         }
-        clienteRepository.deleteById(id);
+        clienteService.excluir(id);
         return ResponseEntity.noContent().build();
 
     }
