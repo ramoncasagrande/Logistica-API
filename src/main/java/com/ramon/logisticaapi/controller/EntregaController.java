@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ramon.logisticaapi.dto.DestinatarioDto;
+import com.ramon.logisticaapi.dto.EntregaDto;
+import com.ramon.logisticaapi.model.Destinatario;
 import com.ramon.logisticaapi.model.Entrega;
 import com.ramon.logisticaapi.repository.EntregaRepository;
 import com.ramon.logisticaapi.services.SolicitacaoEntregaService;
@@ -40,10 +43,25 @@ public class EntregaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Entrega> buscar(@PathVariable Long id) {
+    public ResponseEntity<EntregaDto> buscar(@PathVariable Long id) {
         return entregaRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .map(entrega -> {
+                    EntregaDto entregaDto = new EntregaDto();
+                    entregaDto.setId(entrega.getId());
+                    entregaDto.setNomeCliente(entrega.getCliente().getNome());
+                    entregaDto.setDestinatario(new DestinatarioDto());
+                    entregaDto.getDestinatario().setNome(entrega.getDestinatario().getNome());
+                    entregaDto.getDestinatario().setLogradouro(entrega.getDestinatario().getLogradouro());
+                    entregaDto.getDestinatario().setNumero(entrega.getDestinatario().getNumero());
+                    entregaDto.getDestinatario().setComplemento(entrega.getDestinatario().getComplemento());
+                    entregaDto.getDestinatario().setBairro(entrega.getDestinatario().getBairro());
+                    entregaDto.setTaxa(entrega.getTaxa());
+                    entregaDto.setStatus(entrega.getStatus());
+                    entregaDto.setDataPedido(entrega.getDataPedido());
+                    entregaDto.setDataFinalizacao(entrega.getDataFinalizacao());
+
+                    return ResponseEntity.ok(entregaDto);
+                }).orElse(ResponseEntity.notFound().build());
     }
 
 }
