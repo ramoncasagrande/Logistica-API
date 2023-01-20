@@ -1,6 +1,6 @@
 package com.ramon.logisticaapi.exception;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class ApiException extends ResponseEntityExceptionHandler {
 
         Erro erro = new Erro();
         erro.setStatus(status.value());
-        erro.setDataHora(LocalDateTime.now());
+        erro.setDataHora(OffsetDateTime.now());
         erro.setDescrição("Dados inválidos.");
         erro.setProblemas(problemas);
 
@@ -53,7 +53,7 @@ public class ApiException extends ResponseEntityExceptionHandler {
 
         Erro erro = new Erro();
         erro.setStatus(status.value());
-        erro.setDataHora(LocalDateTime.now());
+        erro.setDataHora(OffsetDateTime.now());
         erro.setDescrição(ex.getMessage());
         
         return handleExceptionInternal(ex, erro, new HttpHeaders(), status, request);
