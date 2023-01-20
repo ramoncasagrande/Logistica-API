@@ -2,10 +2,10 @@ package com.ramon.logisticaapi.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.ramon.logisticaapi.ValidationGroups;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -15,6 +15,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.groups.ConvertGroup;
+import jakarta.validation.groups.Default;
 import lombok.Data;
 
 @Data
@@ -25,6 +29,9 @@ public class Entrega {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @Valid
+    @ConvertGroup(from = Default.class, to = ValidationGroups.ClienteId.class)
     @ManyToOne
     private Cliente cliente;
 
@@ -37,6 +44,7 @@ public class Entrega {
     @JsonProperty(access = Access.READ_ONLY)
     private StatusEntrega status;
 
+    @NotNull
     private BigDecimal taxa;
 
     @JsonProperty(access = Access.READ_ONLY)
