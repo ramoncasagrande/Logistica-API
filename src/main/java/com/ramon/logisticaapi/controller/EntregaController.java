@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -18,6 +19,7 @@ import com.ramon.logisticaapi.dto.EntregaDto;
 import com.ramon.logisticaapi.dto.EntregaInputDto;
 import com.ramon.logisticaapi.model.Entrega;
 import com.ramon.logisticaapi.repository.EntregaRepository;
+import com.ramon.logisticaapi.services.FinalizarEntregaService;
 import com.ramon.logisticaapi.services.SolicitacaoEntregaService;
 
 import jakarta.validation.Valid;
@@ -32,6 +34,8 @@ public class EntregaController {
     private EntregaRepository entregaRepository;
     @Autowired
     private EntregaConverter entregaConverter;
+    @Autowired
+    private FinalizarEntregaService finalizacaoEntregaService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -52,6 +56,12 @@ public class EntregaController {
         return entregaRepository.findById(id)
                 .map(entrega -> ResponseEntity.ok(entregaConverter.converte(entrega)))
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{entregaId}/finalizacao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void finalizar(@PathVariable Long entregaId){
+        finalizacaoEntregaService.finalizar(entregaId);
     }
 
 }

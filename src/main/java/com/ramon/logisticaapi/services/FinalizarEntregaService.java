@@ -5,18 +5,26 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ramon.logisticaapi.model.Entrega;
-import com.ramon.logisticaapi.model.Ocorrencia;
+import com.ramon.logisticaapi.repository.EntregaRepository;
 
+import lombok.Data;
 
+@Data
 @Service
-public class OcorrenciaService {
+public class FinalizarEntregaService {
 
     @Autowired
     private BuscaEntregaService buscaEntregaService;
-    
+
+    @Autowired
+    private EntregaRepository entregaRepository;
+
     @Transactional
-    public Ocorrencia registrar(Long entregaId, String descricao){
+    public void finalizar(Long entregaId){
         Entrega entrega = buscaEntregaService.buscar(entregaId);
-        return entrega.adicionarOcorrencia(descricao);
+
+        entrega.finalizar();
+        entregaRepository.save(entrega);
     }
+    
 }
