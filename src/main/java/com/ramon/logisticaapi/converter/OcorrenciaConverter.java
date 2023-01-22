@@ -1,5 +1,8 @@
 package com.ramon.logisticaapi.converter;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,5 +21,11 @@ public class OcorrenciaConverter {
 
     public OcorrenciaDto converteParaOcorrenciaDto(Ocorrencia ocorrencia){
         return modelMapper.map(ocorrencia, OcorrenciaDto.class);
+    }
+
+    public List<OcorrenciaDto> converteLista(List<Ocorrencia> ocorrencias){
+        return ocorrencias.stream()
+                .map(this::converteParaOcorrenciaDto)
+                .collect(Collectors.toList());
     }
 }
